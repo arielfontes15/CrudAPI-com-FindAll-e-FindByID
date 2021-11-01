@@ -1,4 +1,6 @@
-﻿namespace RestAPI02.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestAPI02.Models
 {
     public class Pessoa
     {

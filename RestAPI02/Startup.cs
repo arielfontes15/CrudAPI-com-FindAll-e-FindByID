@@ -1,18 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RestAPI02.Data;
 using RestAPI02.Services;
 using RestAPI02.Services.Implementacoes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestAPI02
 {
@@ -30,6 +25,9 @@ namespace RestAPI02
         {
 
             services.AddControllers();
+            services.AddDbContext<Context>();
+
+
             //Injecao de dependencia
             services.AddScoped<IPessoaService, PessoaServiceImplementacao>();
             services.AddSwaggerGen(c =>
