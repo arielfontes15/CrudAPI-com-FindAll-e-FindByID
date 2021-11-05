@@ -1,40 +1,55 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestAPI02.Data;
-using RestAPI02.Services;
-using RestAPI02.Services.Implementacoes;
+using RestAPI02.Negocio;
+using RestAPI02.Negocio.Implementacoes;
+using RestAPI02.Repositorio;
+using RestAPI02.Repositorio.Implementacoes;
+using Serilog;
+using System;
 
 namespace RestAPI02
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            Configuration = configuration;
+            Environment = environment;
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+        }
+
+        // This method gets called by the runtime. Use this method to add Negocio to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
 
             services.AddControllers();
             services.AddDbContext<Context>();
 
+            //Injeção de dependencia para versionar a API Versioning api #Instalar o Package microsoft.aspnetcore.mvc.versioning
+            services.AddApiVersioning();
 
             //Injecao de dependencia
-            services.AddScoped<IPessoaService, PessoaServiceImplementacao>();
+            services.AddScoped<IPessoaNegocio, PessoaNegocioImplementacao>();
+            services.AddScoped<IPessoaRepositorio, PessoaRepositorioImplementacao>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPI02", Version = "v1" });
             });
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

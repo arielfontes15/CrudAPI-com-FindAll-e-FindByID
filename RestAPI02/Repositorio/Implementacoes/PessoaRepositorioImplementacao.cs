@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RestAPI02.Services.Implementacoes
+namespace RestAPI02.Repositorio.Implementacoes
 {
-    public class PessoaServiceImplementacao : IPessoaService
+    public class PessoaRepositorioImplementacao : IPessoaRepositorio
     {
         private Context _context;
 
-        public PessoaServiceImplementacao(Context context)
+        public PessoaRepositorioImplementacao(Context context)
         {
             _context = context;
         }
@@ -44,9 +44,7 @@ namespace RestAPI02.Services.Implementacoes
         public Pessoa Update(Pessoa pessoa)
         {
             if (!Exists(pessoa.Id))
-            {
-                return new Pessoa();
-            }
+                return null;
 
             var result = _context.Pessoas.SingleOrDefault(p => p.Id.Equals(pessoa.Id));
 
@@ -85,7 +83,7 @@ namespace RestAPI02.Services.Implementacoes
             }
         }
 
-        private bool Exists(long id)
+        public bool Exists(long id)
         {
             return _context.Pessoas.Any(p => p.Id.Equals(id));
         }

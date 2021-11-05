@@ -1,37 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestAPI02.Models;
-using RestAPI02.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RestAPI02.Negocio;
 
 namespace RestAPI02.Controllers
 {
+    // Versionando a API
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PessoaController : ControllerBase
     {
         private readonly ILogger<PessoaController> _logger;
-        private IPessoaService _pessoaService;
+        private IPessoaNegocio _pessoaNegocio;
 
-        public PessoaController(ILogger<PessoaController> logger, IPessoaService pessoaService)
+        public PessoaController(ILogger<PessoaController> logger, IPessoaNegocio pessoaNegocio)
         {
             _logger = logger;
-            _pessoaService = pessoaService;
+            _pessoaNegocio = pessoaNegocio;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_pessoaService.FindAll());
+            return Ok(_pessoaNegocio.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            var pessoa = _pessoaService.FindByID(id);
+            var pessoa = _pessoaNegocio.FindByID(id);
 
             if (pessoa == null)
                 return NotFound();
@@ -46,7 +44,7 @@ namespace RestAPI02.Controllers
             if (pessoa == null)
                 return BadRequest();
 
-            return Ok(_pessoaService.Create(pessoa));
+            return Ok(_pessoaNegocio.Create(pessoa));
         }
 
         [HttpPut]
@@ -56,13 +54,13 @@ namespace RestAPI02.Controllers
             if (pessoa == null)
                 return BadRequest();
 
-            return Ok(_pessoaService.Update(pessoa));
+            return Ok(_pessoaNegocio.Update(pessoa));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            _pessoaService.Delete(id);
+            _pessoaNegocio.Delete(id);
 
             return NoContent();
         }

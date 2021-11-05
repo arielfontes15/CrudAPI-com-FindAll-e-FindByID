@@ -1,9 +1,9 @@
 ﻿using RestAPI02.Models;
 using System.Collections.Generic;
 
-namespace RestAPI02.Services
+namespace RestAPI02.Negocio
 {
-    public interface IPessoaService
+    public interface IPessoaNegocio
     {
         Pessoa Create(Pessoa pessoa);
         Pessoa FindByID(long id);
