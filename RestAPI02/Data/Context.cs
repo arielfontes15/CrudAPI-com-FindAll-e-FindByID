@@ -6,6 +6,7 @@ namespace RestAPI02.Data
     public class Context : DbContext
     {
         public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Livro> Livros { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

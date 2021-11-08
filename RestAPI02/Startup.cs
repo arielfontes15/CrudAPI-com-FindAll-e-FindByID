@@ -42,7 +42,9 @@ namespace RestAPI02
 
             //Injecao de dependencia
             services.AddScoped<IPessoaNegocio, PessoaNegocioImplementacao>();
+            services.AddScoped<ILivroNegocio, LivroNegocioImplementacao>();
             services.AddScoped<IPessoaRepositorio, PessoaRepositorioImplementacao>();
+            services.AddScoped<ILivroRepositorio, LivroRepositorioImplementacao>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPI02", Version = "v1" });
